@@ -1,0 +1,24 @@
+[build]
+# RISC-V 32비트 타겟 설정
+target = "riscv32i-unknown-none-elf"
+
+[target.riscv32i-unknown-none-elf]
+# RISC-V 32비트용 컴파일 설정
+rustflags = [
+    # RISC-V 32비트 ISA 설정
+    "-C", "target-feature=+m",          # 곱셈/나눗셈 확장
+    "-C", "target-feature=-a",          # 원자적 연산 비활성화
+    "-C", "target-feature=-c",          # 압축 명령어 비활성화
+    "-C", "target-feature=-f",          # 부동소수점 비활성화
+    "-C", "target-feature=-d",          # 배정도 부동소수점 비활성화
+    
+    # 최적화 설정
+    "-C", "opt-level=s",                # 크기 최적화
+    "-C", "panic=abort",                # 패닉 시 중단
+    "-C", "codegen-units=1",            # 단일 코드젠 유닛
+    
+    # 보안 설정
+    "-C", "relocation-model=static",    # 정적 재배치
+]
+
+# nightly 기능은 명령줄에서 직접 사용 

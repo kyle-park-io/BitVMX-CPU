@@ -1,0 +1,3 @@
+First Hash: 00000000
+Last Hash: 00050513
+Chain Length:       47

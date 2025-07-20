@@ -1,0 +1,109 @@
+
+Discarded input sections
+
+ .text          0x00000000        0x0 build/start.o
+ .data          0x00000000        0x0 build/start.o
+ .bss           0x00000000        0x0 build/start.o
+ .debug_line    0x00000000       0x4f build/start.o
+ .debug_info    0x00000000       0x26 build/start.o
+ .debug_abbrev  0x00000000       0x14 build/start.o
+ .debug_aranges
+                0x00000000       0x20 build/start.o
+ .debug_str     0x00000000       0x47 build/start.o
+ .text          0x00000000        0x0 target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+ .comment       0x00000000       0x69 target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+ .note.GNU-stack
+                0x00000000        0x0 target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x80000000         0x00010000         xr
+RAM              0xa0000000         0x00040000         xrw
+INDATA           0xa0001000         0x00001000         rw
+OUTDATA          0xa0002000         0x00001000         rw
+STACK            0xe0000000         0x00800000         rw
+REGS             0xf0000000         0x00000080         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.text.init      0x80000000       0x18
+ *(.text.init)
+ .text.init     0x80000000       0x18 build/start.o
+                0x80000000                _start
+
+.text           0x80000018       0xb4
+                [!provide]                        PROVIDE (__text_start = .)
+ *(.text.init)
+ *(.text)
+ *(.text.*)
+ .text._ZN14one_way_option21save_result_to_memory17hcb0bd1645b6a8deaE
+                0x80000018       0x50 target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+ .text._ZN14one_way_option16main_calculation17h86bdbf87ccfd2cd8E
+                0x80000068       0x30 target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+ .text.main     0x80000098       0x34 target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+                0x80000098                main
+                0x800000cc                        . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__text_end = .)
+
+.rodata         0x800000cc        0x0
+                [!provide]                        PROVIDE (__rodata_start = .)
+ *(.rodata)
+ *(.rodata.*)
+ *(.srodata)
+ *(.srodata.*)
+                0x800000cc                        . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__rodata_end = .)
+
+.data           0xa0000000        0x0 load address 0x800000cc
+                [!provide]                        PROVIDE (__data_start = .)
+ *(.data)
+ *(.data.*)
+                0xa0000000                        . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__data_end = .)
+                [!provide]                        PROVIDE (__data_load_start = LOADADDR (.data))
+
+.bss            0xa0000000        0x0 load address 0x800000cc
+                [!provide]                        PROVIDE (__bss_start = .)
+ *(.bss)
+ *(.bss.*)
+ *(COMMON)
+                0xa0000000                        . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__bss_end = .)
+
+.input          0xa0001000     0x1000
+                [!provide]                        PROVIDE (__input_start = .)
+                0xa0002000                        . = (. + 0x1000)
+ *fill*         0xa0001000     0x1000 
+                [!provide]                        PROVIDE (__input_end = .)
+
+.output         0xa0002000     0x1000
+                [!provide]                        PROVIDE (__output_start = .)
+                0xa0003000                        . = (. + 0x1000)
+ *fill*         0xa0002000     0x1000 
+                [!provide]                        PROVIDE (__output_end = .)
+
+.stack          0xe0000000   0x7ffffc
+                [!provide]                        PROVIDE (__stack_bottom = .)
+                0xe07ffffc                        . = ((. + 0x800000) - 0x4)
+ *fill*         0xe0000000   0x7ffffc 
+                [!provide]                        PROVIDE (__stack_top = .)
+
+/DISCARD/
+ *(.comment)
+ *(.note*)
+ *(.eh_frame*)
+ *(.debug*)
+                [!provide]                        PROVIDE (__stack_size = LENGTH (STACK))
+LOAD build/start.o
+LOAD target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o
+OUTPUT(build/one_way_option.elf elf32-littleriscv)
+
+.riscv.attributes
+                0x00000000       0x2a
+ .riscv.attributes
+                0x00000000       0x28 build/start.o
+ .riscv.attributes
+                0x00000028       0x2a target/riscv32i-unknown-none-elf/release/deps/one_way_option-92c72bfeb69ceedc.o

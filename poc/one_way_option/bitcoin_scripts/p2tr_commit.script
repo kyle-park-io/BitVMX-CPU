@@ -1,0 +1,16 @@
+# BitVM(X) 단방향 옵션 P2TR 커밋 스크립트
+# 실행 해시를 Taproot에 커밋
+
+# 실행 해시 푸시
+OP_PUSHDATA1 20 0x7175baa9616fb26580a72572fb1cfbea9252925f
+
+# 출력 데이터 해시 (32바이트)
+OP_PUSHDATA1 20 0xd81024bf2f82525622a35019adbb8a5f6a92de8cddce1c4e8f0f911f83e6d9e3
+
+# 해시 결합
+OP_CAT
+OP_SHA256
+
+# 예상 커밋 해시와 비교
+OP_PUSHDATA1 20 0x8f45d968959945caeae85b0d99372ea9fc367dc72fd6a154f02f96eca4c2bc3d
+OP_EQUAL

@@ -1,0 +1,21 @@
+# BitVM(X) 단방향 옵션 실행 요약
+# Generated on #오후
+
+# 프로그램 정보
+Binary Size: 204 bytes
+Total Steps: 47
+Final Hash: 7175baa9616fb26580a72572fb1cfbea9252925f
+
+# 옵션 계산 결과
+Settlement Amount: 6,666,666 satoshis
+Profit/Loss: +$3,000 USD
+Option Status: ITM (In The Money)
+Option Type: Call Option
+Intrinsic Value: $3,000 USD
+
+# 비트코인 스크립트 사용법
+# 1. P2TR 커밋: p2tr_commit.script
+# 2. 분쟁 해결: challenge.script
+
+# 검증 명령어
+bitcoin-cli createrawtransaction '[...]' '{"script": ""}'

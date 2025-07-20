@@ -1,0 +1,21 @@
+# BitVM(X) 단방향 옵션 챌린지 스크립트
+# 임의의 스텝을 검증하여 부정행위 방지
+
+# 스텝 번호 (1-47 중 하나)
+OP_PUSHDATA1 8 <STEP_NUMBER>
+
+# 이전 상태 해시
+OP_PUSHDATA1 32 <PREV_STATE_HASH>
+
+# RISC-V 명령어 (32비트)
+OP_PUSHDATA1 4 <INSTRUCTION_OPCODE>
+
+# 다음 상태 해시
+OP_PUSHDATA1 32 <NEXT_STATE_HASH>
+
+# RISC-V 명령어 실행 검증
+<RISC_V_EXECUTION_SCRIPT>
+
+# 결과 해시 검증
+OP_SHA256
+OP_EQUAL

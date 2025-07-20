@@ -294,7 +294,7 @@ enum Commands {
         fail_opcode: Option<Vec<String>>,
 
         /// Memory dump at given step
-        #[arg(short, long)]
+        #[arg(long)]
         dump_mem: Option<u64>,
     },
 }
