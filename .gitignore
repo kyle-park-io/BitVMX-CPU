@@ -22,5 +22,5 @@ tests/resources/
 /.vscode
 
 # checkpoints
-*.json
+# *.json
 .DS_Store

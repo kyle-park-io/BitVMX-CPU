@@ -1,0 +1,12 @@
+{
+    "settlement_amount": 6666666,
+    "profit_loss": 300000,
+    "is_in_money": 1,
+    "option_type": 1,
+    "intrinsic_value": 300000,
+    "execution_status": 0,
+    "magic_number": 3735928559,
+    "checksum": 305419896,
+    "settlement_btc": .06666666,
+    "profit_usd": 3000.00
+}

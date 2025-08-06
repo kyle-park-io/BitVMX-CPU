@@ -1,0 +1,50 @@
+{
+  "execution": {
+    "result": {
+      "Halt": [
+        0,
+        47
+      ]
+    },
+    "last_step": 47,
+    "last_hash": "7175baa9616fb26580a72572fb1cfbea9252925f"
+  },
+  "input": [],
+  "base_step": 0,
+  "verifier_decisions": [],
+  "hash_rounds": [],
+  "final_trace": {
+    "step_number": 0,
+    "read_1": {
+      "address": 0,
+      "value": 0,
+      "last_step": 0
+    },
+    "read_2": {
+      "address": 0,
+      "value": 0,
+      "last_step": 0
+    },
+    "read_pc": {
+      "pc": {
+        "address": 0,
+        "micro": 0
+      },
+      "opcode": 0
+    },
+    "trace_step": {
+      "write_1": {
+        "address": 0,
+        "value": 0
+      },
+      "write_pc": {
+        "address": 0,
+        "micro": 0
+      }
+    },
+    "witness": null,
+    "mem_witness": {
+      "data": 42
+    }
+  }
+}
