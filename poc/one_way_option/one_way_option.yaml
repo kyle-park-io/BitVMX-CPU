@@ -1,0 +1,107 @@
+# 🎯 BitVM(X) 단방향 옵션 프로그램 정의
+# 챌린지 과정을 위한 설정 파일
+
+# ELF 파일 경로 (상대 경로)
+elf: 'build/one_way_option.elf'
+
+# N-ary search 설정 (이진 탐색)
+nary_search: 2
+
+# 최대 실행 스텝 (47 RISC-V 명령어 + 여유분)
+max_steps: 64
+
+# 입력 섹션 이름
+input_section_name: '.input'
+
+# 출력 섹션 이름 (계산 결과 저장)
+output_section_name: '.output'
+
+# 입력 데이터 정의 (옵션 계산용)
+inputs:
+  # 증명자(Prover) 입력 - 옵션 파라미터
+  - size: 4096 # 4KB 입력 버퍼
+    owner: 'prover' # 증명자 소유
+    description: '옵션 계약 파라미터 (현재가, 행사가, 계약크기 등)'
+
+  # 검증자(Verifier) 입력 - 챌린지용 데이터
+  - size: 4096 # 4KB 검증자 버퍼
+    owner: 'verifier' # 검증자 소유
+    description: '검증용 데이터 및 챌린지 파라미터'
+
+# 출력 데이터 정의
+outputs:
+  # 옵션 계산 결과
+  - size: 4096 # 4KB 출력 버퍼
+    address: 0xA0002000 # 출력 메모리 주소
+    description: '옵션 정산 결과 (사토시, 손익, ITM 여부 등)'
+
+# 메모리 레이아웃 정의
+memory_layout:
+  # ROM 영역 (읽기 전용)
+  rom:
+    start: 0x80000000
+    size: 0x10000 # 64KB
+    description: '프로그램 코드 영역'
+
+  # RAM 영역 (읽기/쓰기)
+  ram:
+    start: 0xA0000000
+    size: 0x40000 # 256KB
+    description: '데이터 영역'
+
+  # 입력 영역
+  input:
+    start: 0xA0001000
+    size: 0x1000 # 4KB
+    description: '옵션 파라미터 입력'
+
+  # 출력 영역
+  output:
+    start: 0xA0002000
+    size: 0x1000 # 4KB
+    description: '계산 결과 출력'
+
+  # 스택 영역
+  stack:
+    start: 0xE0000000
+    size: 0x800000 # 8MB
+    description: '함수 호출 스택'
+
+  # 레지스터 영역
+  registers:
+    start: 0xF0000000
+    size: 0x80 # 128B (32개 레지스터 × 4바이트)
+    description: 'RISC-V 레지스터 파일'
+
+# 챌린지 시스템 설정
+challenge:
+  # 타임아웃 설정
+  timeout_rounds: 10 # 최대 10라운드
+  timeout_per_round: 3600 # 라운드당 1시간
+
+  # 검증 옵션
+  verify_all_steps: true # 모든 스텝 검증
+  verify_bitcoin_script: true # Bitcoin Script 검증
+  verify_hash_chain: true # 해시 체인 검증
+
+  # 경제적 인센티브
+  bond_amount: 1000000 # 100만 사토시 (0.01 BTC)
+  reward_ratio: 0.5 # 성공 시 50% 보상
+
+# 프로그램 메타데이터
+metadata:
+  name: 'BitVM(X) One-Way Option Calculator'
+  version: '1.0.0'
+  description: '세계 최소 크기 비트코인 옵션 계산기 (204바이트)'
+  binary_size: 204 # 바이트
+  instruction_count: 47 # RISC-V 명령어 개수
+  hash_chain_length: 47 # 해시 체인 길이
+
+  # 옵션 계산 예시
+  example_calculation:
+    current_price: 4500000 # $45,000 (센트)
+    strike_price: 4200000 # $42,000 (센트)
+    option_type: 1 # 1=Call, 2=Put
+    contract_size: 100000000 # 1 BTC (사토시)
+    expected_payout: 6666666 # 사토시
+    expected_profit: 300000 # $3,000 (센트)

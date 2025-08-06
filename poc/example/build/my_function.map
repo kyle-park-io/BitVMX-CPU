@@ -1,0 +1,92 @@
+
+Discarded input sections
+
+ .text          0x00000000        0x0 build/start.o
+ .data          0x00000000        0x0 build/start.o
+ .bss           0x00000000        0x0 build/start.o
+ .text          0x00000000        0x0 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x80000000         0x00010000         xr
+RAM              0xa0000000         0x00040000         rw
+INDATA           0xa0001000         0x00001000         rw
+OUTDATA          0xa0002000         0x00001000         rw
+STACK            0xe0000000         0x00800000         rw
+REGS             0xf0000000         0x00000080         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.text.init      0x80000000       0x18
+ *(.text.init)
+ .text.init     0x80000000       0x18 build/start.o
+                0x80000000                _start
+
+.text           0x80000018       0xc0
+ *(.text*)
+ .text._ZN11my_function16main_calculation17hc009f384990109a4E
+                0x80000018       0x68 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+ .text.main     0x80000080       0x58 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+                0x80000080                main
+
+.rodata
+ *(.rodata*)
+
+.data
+ *(.data*)
+
+.bss
+ *(.bss*)
+
+.input          0xa0001000     0x1000
+                0xa0001000                        . = ORIGIN (INDATA)
+                0xa0002000                        . = (. + LENGTH (INDATA))
+ *fill*         0xa0001000     0x1000 
+
+.output         0xa0002000     0x1000
+                0xa0002000                        . = ORIGIN (OUTDATA)
+                0xa0003000                        . = (. + LENGTH (OUTDATA))
+ *fill*         0xa0002000     0x1000 
+
+.stack          0xe0000000   0x800000
+                0xe0000000                        . = ORIGIN (STACK)
+                0xe0800000                        . = (. + LENGTH (STACK))
+ *fill*         0xe0000000   0x800000 
+LOAD build/start.o
+LOAD target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+OUTPUT(build/my_function.elf elf32-littleriscv)
+
+.riscv.attributes
+                0x00000000       0x2a
+ .riscv.attributes
+                0x00000000       0x28 build/start.o
+ .riscv.attributes
+                0x00000028       0x2a target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+
+.comment        0x00000000       0x34
+ .comment       0x00000000       0x34 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+                                 0x69 (size before relaxing)
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+
+.debug_line     0x00000000       0x55
+ .debug_line    0x00000000       0x55 build/start.o
+
+.debug_info     0x00000000       0x26
+ .debug_info    0x00000000       0x26 build/start.o
+
+.debug_abbrev   0x00000000       0x14
+ .debug_abbrev  0x00000000       0x14 build/start.o
+
+.debug_aranges  0x00000000       0x20
+ .debug_aranges
+                0x00000000       0x20 build/start.o
+
+.debug_str      0x00000000       0x40
+ .debug_str     0x00000000       0x40 build/start.o

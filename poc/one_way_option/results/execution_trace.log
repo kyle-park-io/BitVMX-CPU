@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.19s
+    Finished `release` profile [optimized] target(s) in 0.17s
      Running `/Users/kyle/code/BitVMX-CPU/target/release/emulator execute --elf /Users/kyle/code/BitVMX-CPU/poc/one_way_option/build/one_way_option.elf --trace --debug --verify`
 [32m INFO[0m Execute program /Users/kyle/code/BitVMX-CPU/poc/one_way_option/build/one_way_option.elf with input: []
 [32m INFO[0m 0000000000000000;00000000;00000000;0000000000000000;00000000;00000000;0000000000000000;00000000;00;00000000;00000000;00000000;00000000;00;00000000;2a;99d44d377bc5936d8cb7f5df90713d84c7587739

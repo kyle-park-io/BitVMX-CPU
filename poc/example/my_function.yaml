@@ -1,0 +1,90 @@
+# 🎯 BitVMX 함수 프로그램 정의
+# 챌린지 과정을 위한 설정 파일
+
+# ELF 파일 경로
+elf: 'build/my_function.elf'
+
+# N-ary search 설정 (이진 탐색)
+nary_search: 2
+
+# 최대 실행 스텝 (예상 스텝 + 여유분)
+max_steps: 128
+
+# 입력 섹션 이름
+input_section_name: '.input'
+
+# 출력 섹션 이름
+output_section_name: '.output'
+
+# 입력 데이터 정의
+inputs:
+  # 증명자(Prover) 입력
+  - size: 4096
+    owner: 'prover'
+    description: '함수 입력 파라미터'
+
+  # 검증자(Verifier) 입력
+  - size: 4096
+    owner: 'verifier'
+    description: '검증용 데이터'
+
+# 출력 데이터 정의
+outputs:
+  - size: 4096
+    address: 0xA0002000
+    description: '함수 계산 결과'
+
+# 메모리 레이아웃
+memory_layout:
+  rom:
+    start: 0x80000000
+    size: 0x10000
+    description: '프로그램 코드'
+
+  ram:
+    start: 0xA0000000
+    size: 0x40000
+    description: '데이터 영역'
+
+  input:
+    start: 0xA0001000
+    size: 0x1000
+    description: '입력 데이터'
+
+  output:
+    start: 0xA0002000
+    size: 0x1000
+    description: '출력 데이터'
+
+  stack:
+    start: 0xE0000000
+    size: 0x800000
+    description: '스택'
+
+  registers:
+    start: 0xF0000000
+    size: 0x80
+    description: '레지스터'
+
+# 챌린지 설정
+challenge:
+  timeout_rounds: 10
+  timeout_per_round: 3600
+  verify_all_steps: true
+  verify_bitcoin_script: true
+  verify_hash_chain: true
+  bond_amount: 1000000
+  reward_ratio: 0.5
+
+# 메타데이터
+metadata:
+  name: 'My BitVMX Function'
+  version: '1.0.0'
+  description: 'BitVMX에서 검증 가능한 사용자 정의 함수'
+  author: 'BitVMX Developer'
+
+  # 예상 결과
+  test_case:
+    input_a: 123
+    input_b: 123
+    expected_result: 15171 # 123 * 123 + 42

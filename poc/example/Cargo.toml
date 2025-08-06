@@ -1,0 +1,24 @@
+[package]
+name = "my_bitvmx_function"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[[bin]]
+name = "my_function"
+path = "src/my_function.rs"
+
+[lib]
+name = "my_bitvmx_function"
+path = "src/lib.rs"
+
+[profile.release]
+opt-level = "z"          # 크기 최적화
+lto = true              # Link Time Optimization
+codegen-units = 1       # 단일 코드 생성 유닛
+panic = "abort"         # 패닉 시 즉시 종료
+strip = true            # 심볼 제거
+
+[dependencies]
+# no_std 환경에서는 의존성 최소화

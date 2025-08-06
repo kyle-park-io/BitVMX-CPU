@@ -1,0 +1,11 @@
+# BitVM(X) Example 함수 챌린지 스크립트
+# 실행 단계 검증용
+
+# 스택: [이전_해시] [트레이스_스텝] [다음_해시]
+OP_SWAP
+OP_SHA256
+OP_SWAP
+OP_EQUAL
+
+# 검증 성공 시 1 반환
+OP_1

@@ -1,0 +1,1 @@
+{"data":{"halt":[0,47],"last_hash":"7175baa9616fb26580a72572fb1cfbea9252925f","last_step":47},"type":"ProverExecuteResult"}
