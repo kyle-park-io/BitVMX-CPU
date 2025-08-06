@@ -261,6 +261,53 @@ EOF
     log_info "  RISC-V 검증 매핑: $total_instructions개 명령어 (평균 $avg_size 바이트)"
 }
 
+# 챌린지 시스템 설정 (Prover-Verifier 분리)
+setup_challenge_system() {
+    log_step "Prover-Verifier 챌린지 시스템 설정 중..."
+    
+    # 챌린지용 별도 디렉토리 생성
+    local challenge_dir="$PROJECT_DIR/challenge_test"
+    local prover_dir="$challenge_dir/prover"
+    local verifier_dir="$challenge_dir/verifier"
+    
+    mkdir -p "$prover_dir" "$verifier_dir"
+    
+    cd "$EMULATOR_DIR"
+    
+    log_info "🎭 Prover-Verifier 챌린지 시나리오 시작"
+    log_info "📂 Prover 경로: $prover_dir"
+    log_info "📂 Verifier 경로: $verifier_dir"
+    
+    # 프로버 실행 (별도 디렉토리에 저장)
+    log_info "🔵 Prover 실행 중..."
+    cargo run --release -- execute \
+        --elf "../poc/one_way_option/build/one_way_option.elf" \
+        --checkpoint-path "$prover_dir" \
+        --trace > /dev/null 2>&1
+    
+    # 베리파이어 실행 (별도 디렉토리에 저장)  
+    log_info "🔴 Verifier 실행 중..."
+    cargo run --release -- execute \
+        --elf "../poc/one_way_option/build/one_way_option.elf" \
+        --checkpoint-path "$verifier_dir" \
+        --trace > /dev/null 2>&1
+    
+    # 결과 확인
+    if [ -f "$prover_dir/checkpoint.0.json" ] && [ -f "$verifier_dir/checkpoint.0.json" ]; then
+        log_info "✅ Prover-Verifier 챌린지 시스템 설정 완료!"
+        
+        # 파일 크기 정보
+        local prover_size=$(du -sh "$prover_dir" | cut -f1)
+        local verifier_size=$(du -sh "$verifier_dir" | cut -f1)
+        
+        log_info "📊 Prover checkpoint: $prover_size"
+        log_info "📊 Verifier checkpoint: $verifier_size"
+        log_info "🔐 완전히 분리된 검증 가능한 시스템 구축됨"
+    else
+        log_error "챌린지 시스템 설정 실패"
+    fi
+}
+
 # 해시 체인 생성
 generate_hash_chain() {
     log_step "실행 트레이스 해시 체인 생성 중..."
@@ -388,11 +435,15 @@ main() {
         "test")
             run_full_test
             ;;
+        "challenge")
+            setup_challenge_system
+            ;;
         "all")
             check_dependencies
             clean_build
             build_project
             execute_program
+            setup_challenge_system
             generate_hash_chain
             generate_bitcoin_scripts
             generate_report
@@ -411,6 +462,7 @@ BitVM(X) 단방향 옵션 자동화 스크립트
   clean    빌드 파일 정리
   build    프로젝트 빌드
   run      프로그램 실행
+  challenge Prover-Verifier 챌린지 시스템 설정
   scripts  비트코인 스크립트 생성
   hash     해시 체인 생성
   report   최종 리포트 생성

@@ -191,26 +191,51 @@ step4_memory() {
 step5_challenge_setup() {
     log_step "5" "챌린지 시나리오 설정 (프로버 vs 베리파이어)"
     
+    # 챌린지용 별도 디렉토리 생성
+    local challenge_dir="$PROJECT_DIR/challenge_test"
+    local prover_dir="$challenge_dir/prover"
+    local verifier_dir="$challenge_dir/verifier"
+    
+    mkdir -p "$prover_dir" "$verifier_dir"
+    
     cd "$EMULATOR_DIR"
     
     echo -e "${PURPLE}🎭 챌린지 시나리오:${NC}"
     echo -e "   프로버(Prover): 계산 결과가 56130이라고 주장"
     echo -e "   베리파이어(Verifier): 이를 의심하고 챌린지 시작"
     echo -e "   목표: N-ary 검색으로 정확한 실행 단계 검증"
+    echo -e "   📂 Prover 경로: $prover_dir"
+    echo -e "   📂 Verifier 경로: $verifier_dir"
     
-    log_cmd "cargo run --release -p emulator -- prover-execute --pdf \"../poc/example/my_function.yaml\""
+    # 프로버 실행 (별도 디렉토리에 저장)
+    log_cmd "cargo run --release -- execute --elf \"../poc/example/build/my_function.elf\" --checkpoint-path \"$prover_dir\" --trace"
     
-    # 프로버 실행
-    local prover_output=$(cargo run --release -p emulator -- prover-execute \
-        --pdf "../poc/example/my_function.yaml" \
-        2>&1)
+    local prover_output=$(cargo run --release -- execute \
+        --elf "../poc/example/build/my_function.elf" \
+        --checkpoint-path "$prover_dir" \
+        --trace 2>&1)
     
     echo "$prover_output"
     
-    if echo "$prover_output" | grep -q "Execution completed"; then
-        log_result "프로버 실행 성공 - 주장 설정 완료"
+    # 베리파이어 실행 (별도 디렉토리에 저장)
+    log_cmd "cargo run --release -- execute --elf \"../poc/example/build/my_function.elf\" --checkpoint-path \"$verifier_dir\" --trace"
+    
+    local verifier_output=$(cargo run --release -- execute \
+        --elf "../poc/example/build/my_function.elf" \
+        --checkpoint-path "$verifier_dir" \
+        --trace 2>&1)
+    
+    echo "$verifier_output"
+    
+    # 결과 확인
+    if [ -f "$prover_dir/checkpoint.0.json" ] && [ -f "$verifier_dir/checkpoint.0.json" ]; then
+        log_result "✅ Prover-Verifier 챌린지 셋업 완료!"
+        echo -e "${GREEN}📊 Prover 파일들:${NC}"
+        ls -la "$prover_dir/"
+        echo -e "${GREEN}📊 Verifier 파일들:${NC}"
+        ls -la "$verifier_dir/"
     else
-        log_result "프로버 설정 완료 (YAML 기반)"
+        log_error "챌린지 셋업 실패"
     fi
     
     wait_for_user

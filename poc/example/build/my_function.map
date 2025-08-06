@@ -25,12 +25,12 @@ Linker script and memory map
  .text.init     0x80000000       0x18 build/start.o
                 0x80000000                _start
 
-.text           0x80000018       0xc0
+.text           0x80000018       0xdc
  *(.text*)
  .text._ZN11my_function16main_calculation17hc009f384990109a4E
-                0x80000018       0x68 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
- .text.main     0x80000080       0x58 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
-                0x80000080                main
+                0x80000018       0x84 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+ .text.main     0x8000009c       0x58 target/riscv32im-unknown-none-elf/release/deps/my_function-55733caa00b71b50.o
+                0x8000009c                main
 
 .rodata
  *(.rodata*)
